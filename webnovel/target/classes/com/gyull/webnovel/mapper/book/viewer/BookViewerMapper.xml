@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.gyull.webnovel.mapper.book.viewer.BookViewerMapper">
+<select id="chapterView" resultType="com.gyull.webnovel.domain.book.BookChapterVO">
+
+</select>
+<select id="chapterScrollPagination" resultType="com.gyull.webnovel.domain.book.BookChapterVO">
+<![CDATA[
+SELECT chapter_idx, book_idx, book_title, chapter_category, chapter_title, chapter_regDate, chapter_views, chapter_rating, chapter_comments
+FROM book_chapter
+WHERE book_idx = #{book_idx} and chapter_category = '연재'
+ORDER BY
+]]>
+<choose>
+	<when test="chapter_sort  == 'asc'">chapter_regDate asc </when>
+	<when test="chapter_sort  == 'desc'">chapter_regDate desc </when>
+	<otherwise>chapter_regDate desc</otherwise>
+</choose>
+<![CDATA[
+limit #{skip}, #{amount};
+]]>
+</select>
+</mapper>

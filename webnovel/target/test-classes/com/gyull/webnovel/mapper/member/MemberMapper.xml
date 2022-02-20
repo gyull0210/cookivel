@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.gyull.webnovel.mapper.member.MemberMapper">
+<resultMap type="com.gyull.webnovel.domain.member.MemberVO" id="memberMap">
+<id property="member_idx" column="member_idx" />
+<result property="mem_email" column="mem_email"/>
+<result property="mem_pw" column="mem_pw"/>
+<result property="mem_nickName" column="mem_nickName"/>
+<result property="mem_regDate" column="mem_regDate"/>
+<result property="mem_recentDate" column="mem_recentDate"/>
+<collection property="authList" resultMap="memberCodeMap" />
+</resultMap>
+<resultMap type="com.gyull.webnovel.domain.member.MemberCodeVO" id="memberCodeMap">
+<result property="member_idx" column="member_idx"/>
+<result property="mem_codeNum" column="mem_codeNum" />
+<result property="mem_codeName" column="mem_codeName" />
+</resultMap>
+<select id="read" resultMap="memberMap">
+SELECT mem.member_idx, mem_email, mem_pw, mem_nickName, mem_regDate, mem_recentDate, mem_codeName
+FROM member mem
+LEFT JOIN member_code memAuth on mem.member_idx = memAuth.member_idx
+WHERE mem.mem_email = #{mem_email}
+</select>
+<insert id="register">
+INSERT INTO member
+(mem_email, mem_pw, mem_nickName, mem_phoneNum, mem_regDate)
+VALUES( #{mem_email}, #{mem_pw}, #{mem_nickName}, #{mem_phoneNum}, now())
+</insert>
+</mapper>
