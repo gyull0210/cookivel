@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>작품관리</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <script src="https://kit.fontawesome.com/f31fa860a2.js" crossorigin="anonymous"></script>
@@ -47,9 +47,11 @@
 										</c:if>
 									</a>					
 								</div>
-								<div class="detail flex-column">
+								<div class="detail flex-column position-relative">
 									<div class="book-header">
-										<span class="fs-lg18 fw-bold">${story.book_title}</span>
+										<a class="stretched link fs-5 fw-bold" href="${story.book_idx}">
+											${story.book_title}
+										</a>
 										<span>${story.book_writer}</span>
 									</div>
 									<div class="fs-sm14 mb-2">${story.book_genre} | ${story.book_writeType} | 총 ${story.book_chapters}화</div>
@@ -129,25 +131,7 @@ $(function () {
 		  let id = $(event.relatedTarget).data('id'); 
 		  console.log(id);
 		  $(this).find('.modal-footer input').val(id);
-		  
-/* 		  $("#storyRemove").on("click", function(){
-				let bookIdx = $("#book_idx").val();
-				
-				formData.append('book_idx', bookIdx);
-				$.ajax('/storyRoom/storyRemove', {
-			   		method: 'POST',
-			        data: {'book_idx', bookIdx.serialize() },
-			        processData: false,
-			        contentType: false,
-			        success: function () {
-			        	alert('업로드 성공');
-			        	location.href="/storyRoom/storyList";
-			        },
-			        error: function () {
-			        	alert('업로드 실패');
-			        },
-				}); 
-			}) */
+
 	})
 
 	var actionForm = $("#actionForm");
@@ -163,12 +147,12 @@ e.preventDefault();
 
 $("#book_idx").remove();
 	actionForm.append("<input type='hidden' id='book_idx' name='book_idx' value='"+ $(this).attr("href")+ "'>");
-	actionForm.attr("action","/storyRoom/chapterList");
+	actionForm.attr("action","/book/list");
 	$("input[name='pageNum']").val($(this).attr("href")).remove();
 	$("input[name='amount']").val($(this).attr("href")).remove();
 	actionForm.submit();
 	$("#book_idx").remove();
-	actionForm.prop("action","/storyRoom/storyList");
+	actionForm.prop("action","/book/list");
 })
 </script>
 </body>

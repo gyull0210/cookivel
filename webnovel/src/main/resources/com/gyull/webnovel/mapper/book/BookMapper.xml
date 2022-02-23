@@ -12,7 +12,7 @@ WHERE book_idx = #{book_idx}
 SELECT chapter_idx, book_idx, book_title, chapter_category, chapter_title, chapter_content, chapter_regDate, chapter_views, chapter_rating, chapter_comments
 FROM book_chapter
 WHERE book_idx = #{book_idx} and chapter_category = '공지'
-ORDER BY chapter_regDate DESC
+ORDER BY chapter_idx DESC
 </select>
 <select id="totalCount" resultType="int">
 select count(*)
@@ -27,14 +27,15 @@ WHERE book_idx = #{book_idx} and chapter_category = '연재'
 ORDER BY
 ]]>
 <choose>
-	<when test="chapter_sort  == 'asc'">chapter_regDate asc </when>
-	<when test="chapter_sort  == 'desc'">chapter_regDate desc </when>
-	<otherwise>chapter_regDate desc</otherwise>
+	<when test="chapter_sort  == 'asc'">chapter_idx ASC</when>
+	<when test="chapter_sort  == 'desc'">chapter_idx DESC</when>
+	<otherwise>chapter_idx DESC</otherwise>
 </choose>
 <![CDATA[
 limit #{skip}, #{amount};
 ]]>
 </select>
+
 <select id="chapterRead" resultType="com.gyull.webnovel.domain.book.BookChapterVO">
 SELECT chapter_idx, book_idx, book_title, chapter_category, chapter_title, chapter_content, chapter_regDate, chapter_views, chapter_rating, chapter_comments
 FROM book_chapter

@@ -23,8 +23,18 @@ public class FreeSeriesServiceImpl implements FreeSeriesService {
 	}
 
 	@Override
+	public List<BookVO> finishedPagination(Criteria cri){
+		return mapper.finishedPagination(cri);
+	}
+	
+	@Override
 	public int totalCount(Criteria cri) {
 		return mapper.totalCount(cri);
+	}
+	
+	@Override
+	public int finishedCount(Criteria cri) {
+		return mapper.finishedCount(cri);
 	}
 
 }

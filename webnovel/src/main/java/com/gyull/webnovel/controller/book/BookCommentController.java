@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gyull.webnovel.domain.book.BookCommentVO;
 import com.gyull.webnovel.domain.pagination.BookCommentCriteria;
 import com.gyull.webnovel.domain.pagination.BookCriteria;
-import com.gyull.webnovel.service.book.comment.BookCommentService;
+import com.gyull.webnovel.service.book.BookCommentService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;

@@ -30,9 +30,13 @@ public class BookController {
 	private BookService service;
 	
 	@RequestMapping(value = "/book/list", method = RequestMethod.GET)
-	public String book(Model model, BookCriteria bcri, Integer book_idx, Integer chapter_idx, String chapter_sort) {
-		log.info("[bcri"+bcri);
-		log.info("chapter_sort"+chapter_sort);
+	public String book(Model model, BookCriteria bcri, Integer book_idx, String chapter_sort) {
+
+		if(chapter_sort != null) {
+			model.addAttribute("chapter_sort",chapter_sort);
+		} else {
+			
+		}
 		model.addAttribute("book_idx", bcri.getBook_idx());
 		model.addAttribute("book", service.bookInfo(book_idx));
 		model.addAttribute("notice", service.chapterNotice(book_idx));
@@ -42,18 +46,7 @@ public class BookController {
 		
 		return "/book/list";
 	}
-	
-	@RequestMapping(value="/book/view", method = RequestMethod.GET)
-	public String view(Model model, Integer book_idx, Integer chapter_idx) {
-		BookChapterVO chapter = new BookChapterVO();
-		
-		chapter.setBook_idx(book_idx);
-		chapter.setChapter_idx(chapter_idx);
-		
-		service.chapterRead(chapter);
-		model.addAttribute("chapter", service.chapterRead(chapter));
-		return "/book/view";
-	}
+
 	//이미지 경로를 만들어서 불러올 수 있는 컨트롤러
 	@RequestMapping(value="/book_cover", method=RequestMethod.GET)
 	@ResponseBody

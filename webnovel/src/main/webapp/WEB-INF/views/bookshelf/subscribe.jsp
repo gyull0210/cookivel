@@ -11,66 +11,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <script src="https://kit.fontawesome.com/f31fa860a2.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../resources/css/common.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&Nanum+Gothic&family=Secular+One&display=swap');
-
-body {
-font-family: 'Nanum Gothic', sans-serif;
-}
-
-.container {
-max-width:1052px;
-}
-
-.nav-link {
-font-family: 'Noto Sans KR', sans-serif;
-font-size:1.2rem;
-}
-
-.dropdown > a {
-padding:0;
-}
-
-.dropdown-toggle:after {
-content:none;
-}
-
-.bg-hashtag {
-border:2px solid #42298f;
-color:#42298f;
-font-size:1rem;
-font-family:'Noto Sans KR' , 'sans-serif';
-}
-
-.subNav-center {
-justify-content:center;
-margin:0 auto;
-}
-
-.bookmark {
-color:MediumSeaGreen;
-}
-
-.bi-bookmark-fill {
-
-}
-
-.bi-bookmark-fill:hover {
-color:darkgreen;
-}
-</style>
 </head>
 <body>
 <header class="has-subNav">
 <jsp:include page="../nav.inc.jsp" />
 <nav class="navbar navbar-expand navbar-light">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">내 서재</a>
-      <ul class="navbar-nav subNav-center me-auto">
+    <a class="navbar-brand fw-bold" href="/bookshelf/subscribe">내 서재</a>
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link" href="#">선호작</a>
         </li>
-        <li class="nav-item" style="margin-left:28px;">
+        <li class="nav-item">
           <a class="nav-link" href="#">최근 본 작품</a>
         </li>
       </ul>

@@ -11,6 +11,33 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <script src="https://kit.fontawesome.com/f31fa860a2.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../resources/css/common.css">
+<style>
+.star {
+    position: relative;
+    color: #ddd;
+    white-space:nowrap;
+  }
+  
+.star input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+  
+.star-fill {
+    width: 0;
+    position: absolute; 
+    left: 0;
+    color:gold;
+    overflow: hidden;
+    pointer-events: none;
+    white-space:nowrap;
+
+}
+</style>
 </head>
 <body>
 <header class="has-subNav bg-white fixed-top">
@@ -23,7 +50,7 @@
         </div>
         <div class="nav-item">
           <div class="d-flex">
-             <a class="view-link" href="#" style="padding:0.7rem 1rem">
+             <a id="prevBtn" class="view-link" href="/book/view?book_idx=${chapter.book_idx}&chapter_idx=<c:out value='${chapter.prev}'/>" style="padding:0.7rem 1rem">
                <i class="bi bi-caret-left-fill"></i>
              </a>
              <div class="text-center">
@@ -34,7 +61,7 @@
                  <span style="font-size:0.9rem">${chapter.chapter_title}</span>
                </div>
              </div>
-             <a class="view-link" href="#" style="padding:0.7rem 1rem">
+             <a id="nextBtn" class="view-link" href="/book/view?book_idx=${chapter.book_idx}&chapter_idx=<c:out value='${chapter.next}'/>" style="padding:0.7rem 1rem">
              	<i class="bi bi-caret-right-fill"></i>
              </a>
           </div>
@@ -51,22 +78,13 @@
 <main>
 <div class="container mt-4" style="padding-top:50px; padding-bottom:50px; max-width:1000px">
 	<div class="list-group list-group-flush">
-			<div class="viewerMenu" style="width:100%;height:100%; position:fixed; top:0; left:0; z-index:1;"></div>
-			<div class="list-group-item">
-${chapter.chapter_title}
-<br>
-${chapter.chapter_content}
-			</div>
-			<div class="list-group-item">
-				<div class="list-group">
-					<div class="list-group-item">
-					이전글
-					</div>
-					<div class="list-group-item">
-					다음글
-					</div>
+			<div class="viewerMenu"></div>
+			<div class="list-group-item" style="margin:1rem 2rem">
+				<div class="mb-4">
+				<b>${chapter.chapter_title}</b>
 				</div>
-			</div>  									  
+				<div>${chapter.chapter_content}</div>
+			</div> 									  
 	</div>	
 </div>
 </main>
@@ -74,20 +92,57 @@ ${chapter.chapter_content}
 	<nav id="viewerBtm" class="navbar navbar-light">
 		<div class="container justify-content-start">
 			<button id="rating" class="btn" data-bs-toggle="modal" data-bs-target="#bookRating">
-				<i class="far fa-star fa-lg"></i> 평점
+				<i class="far fa-star fa-lg"></i> 별점
 			</button>
-			<button id="comment" class="btn" data-bs-toggle="modal" data-bs-toggle="modal" data-bs-target="#bookComment">
+			<button id="comment" class="btn" data-bs-toggle="modal" data-bs-target="#bookComment">
 				<i class="far fa-comment fa-lg"></i> 댓글
 			</button>
 		</div>
 	</nav>
 </footer>
-<!-- 댓글 목록 -->
-<div class="modal fade" id="bookComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog" style="max-width:750px">
+<!-- 별점 등록 -->
+<div class="modal fade" id="bookRating" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookCommentLabel" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">댓글 목록</h5>
+        <h5 class="modal-title" id="bookCommentLabel">별점 주기</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+    	<div>
+    	평점 7.5/10점 (154명 참여)
+    	</div>
+    	<div class="d-flex justify-content-center align-items-center">
+    	<span class="star">
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    	<span class="star-fill">	
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    		<i class="fa-solid fa-star fa-2x"></i>
+    	</span>
+    	<input id="rate" type="range" value="1" step="1" min="0" max="10">    		
+    	</span>   	
+    	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 댓글 목록 -->
+<div class="modal fade" id="bookComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookCommentLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookCommentLabel">댓글 목록</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -105,36 +160,32 @@ ${chapter.chapter_content}
 			</div>
 			<div class="list-group-item">
 				<div class="d-flex justify-content-end">
-					<a href="">인기순</a>
+					<a href="">공감순</a>
 					<a href="">최신순</a>
 				</div>
 			</div>
-  			<div class="list-group-item">
+			<div class="list-group-item">
     			<div class="d-flex justify-content-between align-items-start">
     				<div class="me-2">
     					<img class="rounded-circle" src="https://www.place-hold.it/48X48">
     				</div>
     				<div class="ms-2 me-auto">
-      					<div class="fw-bold">아무개닉네임</div>
+    					<div class="d-flex justify-content-between">
+      						<div class="fw-bold">아무개닉네임</div>
+    						<span>
+    						<a href="#"><i class="bi bi-x-lg"></i></a>
+    						</span>      					
+      					</div>
       						<div>
       							잘 읽었습니다!      						
       						</div>
+      						<div>
+      							<button class="btn btn-outline-secondary btn-sm">댓글</button>
+      						</div>
     					</div>
-    				<span><i class="bi bi-hand-thumbs-up"></i></span>
-    			</div>
-  			</div>
-  			<div class="list-group-item">
-    			<div class="d-flex justify-content-between align-items-start">
-    				<div class="me-2">
-    					<img class="rounded-circle" src="https://www.place-hold.it/48X48">
+    				<div>
+    				    <i class="bi bi-hand-thumbs-up fs-5"></i>
     				</div>
-    				<div class="ms-2 me-auto">
-      					<div class="fw-bold">아무개닉네임</div>
-      						<div>
-      							잘 읽었습니다!      						
-      						</div>
-    					</div>
-    				<span><i class="bi bi-hand-thumbs-up"></i></span>
     			</div>
   			</div>
   			<div class="list-group-item">
@@ -151,11 +202,22 @@ ${chapter.chapter_content}
 <!-- 회차 목록 -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel">회차 목록</h5>
+    <div id="offcanvasRightLabel">
+    	<h5>${chapter.book_title}</h5>
+    	<span>총 ${book.book_chapters}화</span>
+    </div>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    ...
+    <div class="list-group list-group-flush">
+    <c:set value="${list}" var="len" />
+    <c:forEach items="${list}" var="list" varStatus="status">
+    	<div class="list-group-item list-group-item-action">
+    		<c:out value="${fn:length(len) - status.index}화"/>
+    		<a href="/book/views?book_idx=${list.book_idx}&chapter_idx=${list.chapter_idx}">${list.chapter_title}</a>
+		</div>
+	</c:forEach>
+    </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -178,6 +240,27 @@ $(document).ready(function () {
 
 	})
 })	
+</script>
+<script>
+$(document).ready(function () {
+	$("input[type=range]").change(function (e){
+		const drawStar = 
+		    $('.star-fill').css("width", $("input[type=range]").val() * 10+"%");	
+		})
+	}) 
+	
+$(document).ready(function () {
+		let prev = '<c:out value="${chapter.prev}" />'
+		let next = '<c:out value="${chapter.next}" />'
+		
+		if(prev == 0){
+			$("#prevBtn").removeAttr("href");
+		}
+		
+		if(next == 0){
+			$("#nextBtn").removeAttr("href");
+		}
+	})
 </script>
 </body>
 </html>

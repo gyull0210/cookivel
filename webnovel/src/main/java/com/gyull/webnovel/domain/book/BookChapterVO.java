@@ -33,5 +33,9 @@ public class BookChapterVO {
 	private int chapter_rating;
 	private int chapter_comments;
 	
-	private String chapter_isHidden;
+	private String chapter_isHidden;	
+	
+	//페이지 이전, 다음
+	private int prev;
+	private int next;
 }

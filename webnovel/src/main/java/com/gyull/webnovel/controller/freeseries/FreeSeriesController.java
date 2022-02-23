@@ -18,15 +18,28 @@ import lombok.extern.log4j.Log4j;
 public class FreeSeriesController {
 	
 	private FreeSeriesService service;
-	
-	@RequestMapping(value = "/freeSeries/list", method = RequestMethod.GET)
-	public String freeSeries(Model model, Criteria cri, String sort) {
+
+	@RequestMapping(value = "/freeSeries/recentBook", method = RequestMethod.GET)
+	public String recentBook(Model model, Criteria cri) {
 		
 		model.addAttribute("list", service.pagination(cri));
 
 		Integer total = service.totalCount(cri);
+		model.addAttribute("total", total);
 		model.addAttribute("pageMaker", new PaginationDTO(cri, total));
 		
-		return "/freeSeries/list";
+		return "/freeSeries/recentBook";
+	}
+
+	@RequestMapping(value = "/freeSeries/finishedBook", method = RequestMethod.GET)
+	public String finishedBook(Model model, Criteria cri) {
+		
+		model.addAttribute("list", service.finishedPagination(cri));
+
+		Integer total = service.finishedCount(cri);
+		model.addAttribute("total", total);
+		model.addAttribute("pageMaker", new PaginationDTO(cri, total));
+		
+		return "/freeSeries/finishedBook";
 	}
 }

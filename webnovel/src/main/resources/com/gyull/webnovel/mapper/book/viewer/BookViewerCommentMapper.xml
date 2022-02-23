@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.gyull.webnovel.mapper.book.viewer.BookViewerCommentMapper">
+<select id="commentPagination" resultType="com.gyull.webnovel.domain.book.BookCommentVO">
+SELECT bookComment_idx, member_idx, book_idx, chapter_idx, mem_nickName, bc_comment, bc_like, bc_regDate, bc_parent, bc_depth, bc_seq
+FROM book_comment
+WHERE book_idx = #{book_idx} and chapter_idx #{chapter_idx}
+ORDER BY bc_group desc, bookComment_idx, bc_parent, bc_seq
+limit 10;
+</select>
+<select id="totalCommentCount">
+SELECT count(*)
+FROM book_comment
+WHERE book_idx = #{book_idx} and chapter_idx = #{chapter_idx} and bc_parent = IFNULL(#{bc_parent})
+</select>
+<insert id="createComment">
+INSERT INTO book_comment(member_idx, book_idx, chapter_idx, mem_nickName, bc_comment, bc_regDate)
+VALUES(#{member_idx}, #{book_idx}, #{chapter_idx}, #{mem_nickName}, #{bc_comment}, now())
+</insert>
+<delete id="removeComment">
+DELETE book_comment
+WHERE bookComment_idx = #{bookComment_idx} and member_idx =  #{member_idx}
+</delete>
+<select id="likeCount">
+SELECT count(*)
+FROM book_comment_recommend
+WHERE book_idx = #{book_idx} and chapter_idx = #{chapter_idx}
+</select>
+<update id="updatelikeCount">
+UPDATE
+SET book_comment
+bc_like = {SELECT count(*) FROM book_comment_recommend WHERE book_idx = #{book_idx} and chapter_idx = #{chapter_idx} and bookComment_idx = #{bookComment_idx}
+WHERE book_idx = #{book_idx} and chapter_idx = #{chapter_idx} and bookComment_idx = #{bookComment_idx}
+</update>
+<insert id="like">
+INSERT INTO book_comment_recommend(book_idx, chapter_idx, bookComment_idx, bc_recommend_like)
+VALUES(#{book_idx}, #{chapter_idx}, #{bookComment_idx}, #{bc_recommend_like})
+</insert>
+<delete id="removeLike">
+DELETE book_comment_recommend
+WHERE member_idx = #{member_idx} and #{book_idx} and #{bookComment_idx}
+</delete>
+</mapper>

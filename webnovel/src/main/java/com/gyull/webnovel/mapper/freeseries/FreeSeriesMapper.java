@@ -8,6 +8,10 @@ import com.gyull.webnovel.domain.pagination.Criteria;
 public interface FreeSeriesMapper {
 
 	public List<BookVO> pagination(Criteria cri);
+
+	public List<BookVO> finishedPagination(Criteria cri);
 	
 	public int totalCount(Criteria cri);
+	
+	public int finishedCount(Criteria cri);
 }

@@ -2,6 +2,9 @@ package com.gyull.webnovel.domain.book;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+
 import lombok.Data;
 /**
  * 회차 별점
@@ -17,5 +20,6 @@ public class BookRatingDTO {
 	private int book_idx;
 	private int chapter_idx;
 	private int chapter_rate;
-	private LocalDateTime br_regDate;
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	private LocalDateTime br_regDate = LocalDateTime.now();
 }

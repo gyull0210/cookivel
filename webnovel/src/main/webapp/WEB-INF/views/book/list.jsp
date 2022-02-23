@@ -17,16 +17,8 @@
 <jsp:include page="../nav.inc.jsp" />
 <nav class="navbar navbar-expand navbar-light">
   <div class="container container-subNav">
-    <a class="navbar-brand fw-bold" href="#">자유연재</a>
-      <ul class="navbar-nav subNav-center me-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#"></a>
-        </li>
-        <li class="nav-item" style="margin-left:28px;">
-          <a class="nav-link" href="#"></a>
-        </li>
-      </ul>
-    </div>
+    <a class="navbar-brand fw-bold" href="/freeSeries/list">자유연재</a>
+  </div>
 </nav>
 </header>
 <main>
@@ -47,7 +39,7 @@
 											<img class="mx-auto d-block img-fluid position-relative" src="${bookCoverPath}">
 										</div>
 									</c:if>
-									<button class="btn btn-dark">첫 회차 읽기</button>					
+									<button class="btn btn-dark" type="button">첫 회차 읽기</button>					
 								</div>
 								<div class="d-flex detail flex-column">
 									<div class="d-flex justify-content-between">
@@ -64,7 +56,7 @@
 											</div>
 										</div>
 										<div class="d-flex flex-column">
-											<span>
+											<span class="bookmark">
 												<i class="bi bi-bookmark fs-1"></i>
 												<i class="d-none bi bi-bookmark-fill fs-1"></i>
 											</span>																
@@ -92,9 +84,6 @@
 											</span>
 											<span class="me-2">
 												<i class="far fa-star fs-2" alt="추천수"></i> ${book.book_rating}
-											</span>
-											<span>
-												<i class="fa fa-regular fa-comment fs-2" alt="댓글수"></i> ${book.book_comments}
 											</span>
 										</div>
 									</div>																																		
@@ -150,7 +139,17 @@
   			   		<div class="list-group-item list-group-item-action justify-content-around position-relative">
   						<div>
   							<a class="chapter-link stretched-link" href="/book/view?book_idx=${chapter.book_idx}&chapter_idx=${chapter.chapter_idx}">
+  							<c:choose>
+  								<c:when test="${chapter_sort eq 'desc'}">
   								<c:out value="${(pageMaker.total - status.index) - ( (pageMaker.bcri.pageNum - 1) * 10)}화"/>
+  								</c:when>
+  								<c:when test="${chapter_sort eq 'asc'}">
+  								<c:out value="${(status.index+1) + ( (pageMaker.bcri.pageNum - 1) * 10)}"/>화
+  								</c:when>
+  								<c:when test="${chapter_sort == '' or chapter_sort == null}">
+  								<c:out value="${(pageMaker.total - status.index) - ( (pageMaker.bcri.pageNum - 1) * 10)}화"/>
+  								</c:when>
+  							</c:choose>
   								${chapter.chapter_title}
   							</a>  							
   							<div>
@@ -172,7 +171,7 @@
   					</div>
   				</div>
 				</c:if>
-  			<div class="list-group-item pt-4">
+  			<div class="list-group-item pt-4" style="border-bottom:none;">
   					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center">
 						<c:if test="${pageMaker.prev}">
@@ -203,19 +202,28 @@
 						</form>
 					</nav>	
   			</div>
+  			<div class="chapter-list-header">
+				<span class="fs-5">댓글목록</span>				
+			</div>
+  			<div class="sort-header">
+  			<div class="d-grid gap-2 d-flex justify-content-end">
+  				<a class="sort-link" href="<c:url value='/book/list?book_idx=${book.book_idx}&chapter_sort=desc'/>">추천순</a>
+  				<div class="vr"></div>
+  				<a class="sort-link" href="<c:url value='/book/list?book_idx=${book.book_idx}&chapter_sort=asc'/>">최신순</a>
+			</div>
+			</div>			
+			<div class="list-group-item">
+				<div class="list-group list-group-flush">
+					<div class="list-group-item">
+						댓글					
+					</div>
+					<div class="list-group-item">
+					댓글
+					</div>
+				</div>
+			</div>  			
   			</div>
   			<div class="list-group list-group-flush d-none d-md-flex col-md-4">
-				<div class="card bg-light mb-4">
-					<div class="card-body d-flex flex-column">
-						<div>
-							<img class="rounded" src="http://www.placehold.it/64X64">
-							<span>작가이름</span>
-						</div>						
-						<div>
-							<p>자기소개</p>
-						</div>
-					</div>						
-				</div>
 				<div class="card">
 				  <div class="card-header">
 				  작가의 다른 작품
@@ -223,23 +231,7 @@
                   <div class="card-body d-flex align-items-start">                      
                       <div class="ms-2 me-2">
                          <a href="#">
-                          	<img src="http://www.placehold.it/80X100">                          
-                         </a>
-                      </div>
-                      <div>
-                         <div>
-                           작품제목<br>
-                           장르 연재 회차
-                         </div>
-                         <div>
-                            작품내용
-                         </div>
-                      </div>
-                  </div>
-                  <div class="card-body d-flex align-items-start">                      
-                      <div class="ms-2 me-2">
-                         <a href="#">
-                          	<img src="http://www.placehold.it/80X100">                          
+                          	<img src="https://via.placeholder.com/80X100">                          
                          </a>
                       </div>
                       <div>
@@ -274,6 +266,11 @@ $(function () {
 		actionForm.submit();
 	});	
 });
+</script>
+<script>
+$(".bookmark").on("click", function(){
+	alert("구독기능은 로그인 후 이용해주세요");
+})
 </script>
 </body>
 </html>

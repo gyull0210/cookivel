@@ -15,6 +15,8 @@ public class BookCommentVO {
 
 	private int bookComment_idx;
 	private int member_idx;
+	private int book_idx;
+	private int chapter_idx;
 	private String mem_nickName;
 	private String bc_comment;
 	private int bc_like;

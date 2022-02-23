@@ -7,17 +7,19 @@ public class Criteria {
 	private int skip;
 	
 	private String sort;
+	private String genre;
 	
 	public Criteria() {
-		this(1, 10, null);
+		this(1, 10, null, null);
 		this.skip = 0;
 	}
 	
-	public Criteria(int pageNum, int amount, String sort) {
+	public Criteria(int pageNum, int amount, String sort, String genre) {
 		this.pageNum = pageNum;
 		this.amount = amount;
 		this.skip = (pageNum-1)*amount;
 		this.sort = sort;
+		this.genre = genre;
 	}
 
 	public int getPageNum() {
@@ -53,9 +55,18 @@ public class Criteria {
 	public void setSort(String sort) {
 		this.sort = sort;
 	}
+	
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	
 	@Override
 	public String toString() {
-		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", skip=" + skip + ", sort=" + sort + "]";
+		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", skip=" + skip + ", sort=" + sort + ", genre=" + genre + "]";
 	}
 	
 }
