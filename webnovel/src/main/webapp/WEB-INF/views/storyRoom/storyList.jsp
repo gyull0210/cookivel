@@ -49,7 +49,7 @@
 								</div>
 								<div class="detail flex-column position-relative">
 									<div class="book-header">
-										<a class="stretched link fs-5 fw-bold" href="${story.book_idx}">
+										<a class="move stretched-link fs-5 fw-bold" href="${story.book_idx}">
 											${story.book_title}
 										</a>
 										<span>${story.book_writer}</span>
@@ -152,7 +152,7 @@ $("#book_idx").remove();
 	$("input[name='amount']").val($(this).attr("href")).remove();
 	actionForm.submit();
 	$("#book_idx").remove();
-	actionForm.prop("action","/book/list");
+	actionForm.prop("action","/storyRoom/storyList");
 })
 </script>
 </body>

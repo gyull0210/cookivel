@@ -4,8 +4,8 @@ PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "com.gyull.webnovel.mapper.book.viewer.BookViewerRatingMapper">
 <update id="updateChapterRating">
-UPDATE
-SET book_chapter
+UPDATE book_chapter
+SET 
 chapter_rating = (SELECT AVG(chapter_rate) FROM book_rating WHERE book_idx = #{book_idx} and chapter_idx = #{chapter_idx})
 WHERE chapter_idx = #{chapter_idx}
 </update>
@@ -15,7 +15,7 @@ FROM book_rating
 WHERE book_chapter = #{chapter_idx}
 </update>
 <insert id="bookRating">
-INSERT INTO book_rating(member_idx, book_idx, chapter_idx, now(), chapter_rate)
+INSERT INTO book_rating(member_idx, book_idx, chapter_idx, recent_regDate, chapter_rate)
 VALUES(#{member_idx}, #{book_idx}, #{chapter_idx}, now(), #{chapter_idx})
 </insert>
 <update id="updateRating">
