@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,74 +23,62 @@
 </nav>
 </header>
 <main>
-<div class="container mt-4">
+<div class="container mt-2">
 	<div class="list-group list-group-flush">
 			<div class="list-group-item">
-				<div class="d-flex justify-content-between align-items-start ms-2 me-auto">
-					<div class="d-flex">
-								<div class="cover d-flex flex-column me-4">
-									<c:set var="bookCoverPath" value="/book_cover?book_imgName=${fn:replace(book.book_imgUrl, '\\\\', '/')}/${book.book_imgName}" />
-									<c:if test="${book.book_imgUrl == null}">
-										<div class="book-cover rounded mb-2">
-											<img class="mx-auto d-block img-fluid position-relative" src="http://www.placehold.it/180X270">
-										</div>																					
-									</c:if>
-									<c:if test="${book.book_imgUrl != null}">
-										<div class="book-cover rounded mb-2">																
-											<img class="mx-auto d-block img-fluid position-relative" src="${bookCoverPath}">
-										</div>
-									</c:if>
-									<button class="btn btn-dark" type="button">첫 회차 읽기</button>					
-								</div>
-								<div class="d-flex detail flex-column">
-									<div class="d-flex justify-content-between">
-										<div class="d-flex flex-column">
-											<div class="book-header">
-												<span class="h2 fw-bold">${book.book_title}</span>
-												<span class="h5">${book.book_writer}</span>
-											</div>
-											<div class="mb-2">
-											${book.book_genre} | ${book.book_writeType eq "free"?"자유연재":"작가연재"}
-											</div>
-											<div class="mb-2">
-												총 ${book.book_chapters}화
-											</div>
-										</div>
-										<div class="d-flex flex-column">
-											<span class="bookmark">
-												<i class="bi bi-bookmark fs-1"></i>
-												<i class="d-none bi bi-bookmark-fill fs-1"></i>
-											</span>																
-										</div>							
-									</div>
-									<div class="d-flex flex-column justify-content-between">
-										<div class="book-intro-text">
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										작품 소개하는 말
-										</div>
-										<div class="d-flex justify-content-end align-items-end pt-2">
-											<span class="me-2">
-												<i class="fas fa-user fs-2" alt="조회수"></i> ${book.book_views}													
-											</span>
-											<span class="me-2">
-												<i class="far fa-star fs-2" alt="추천수"></i> ${book.book_rating}
-											</span>
-										</div>
-									</div>																																		
-								</div>
+			<div class="d-flex pt-2 pb-2">
+					<div class="book-cover mb-2 me-4">
+					<c:set var="bookCoverPath" value="/book_cover?book_imgName=${fn:replace(book.book_imgUrl, '\\\\', '/')}/${book.book_imgName}" />
+					<c:if test="${book.book_imgUrl == null}">
+						<img class="mx-auto d-block img-fluid rounded position-relative" src="http://www.placehold.it/180X270">																					
+					</c:if>
+					<c:if test="${book.book_imgUrl != null}">																
+						<img class="mx-auto d-block img-fluid rounded position-relative" src="${bookCoverPath}">
+					</c:if>
+					</div>
+					<div class="detail d-flex flex-column justify-content-between" style="flex:1 1;">
+						<div>
+						<div class="header d-flex justify-content-between">
+							<div>
+								<span class="h2 fw-bold">${book.book_title}</span>
+								<span class="fs-6">${book.book_writer}</span>
+								<div>${book.book_genre} | ${book.book_writeType eq "free"?"자유연재":"작가연재"}</div>
+							</div>
+							<div class="pt-1 pb-1">
+							<div class="bookmark" data-bookmark="${book.book_idx}">
+							<c:if test="${subscribe == 0}">
+								<i class="fa-solid fa-bookmark bookmark-none fa-2x"></i>
+								<i class="fa-solid fa-bookmark bookmark-active fa-2x d-none"></i>
+							</c:if>
+							<c:if test="${subscribe == 1}">
+								<i class="fa-solid fa-bookmark bookmark-none fa-2x d-none"></i>
+								<i class="fa-solid fa-bookmark bookmark-active fa-2x"></i>
+							</c:if>
+							</div>							
+							</div>
 						</div>
-						</div> 
+						<div class="mb-4">
+							<span>총 ${book.book_chapters}화</span>
+						</div>
+						<div class="book-intro-long">
+							${book.book_intro}
+						</div>
+						</div>
+						<div class="d-flex justify-content-between align-items-end pt-2 pb-2">
+						<div>
+							<span class="me-2">
+								<i class="fas fa-user fa-lg" alt="조회수"></i> ${book.book_views}													
+							</span>
+							<span class="me-2">
+								<i class="far fa-star fa-lg" alt="추천수"></i> ${book.book_rating}
+							</span>
+						</div>
+						<c:if test="${firstChapter != 0}">
+							<button class="btn btn-dark" type="button" onclick="location.href='/book/view?book_idx=${book.book_idx}&chapter_idx=${firstChapter}'">첫 회차 읽기</button>					
+						</c:if>
+						</div>						
+					</div>
+				</div>
 			</div>
 			<div class="list-group-item">
 				<div>해시태그</div>
@@ -194,7 +183,7 @@
 							</li>
 						</c:if>
 						</ul>
-						<form id="actionForm" action="/book/list?" method="get">
+						<form id="actionForm" action="/book/list" method="get">
 							<input type="hidden" name="book_idx" value="${book_idx}">
 							<input type="hidden" name="chapter_sort" value="${pageMaker.bcri.chapter_sort}">
 							<input type="hidden" name="pageNum" value="${pageMaker.bcri.pageNum}">
@@ -212,15 +201,44 @@
   				<a class="sort-link" href="<c:url value='/book/list?book_idx=${book.book_idx}&chapter_sort=asc'/>">최신순</a>
 			</div>
 			</div>			
-			<div class="list-group-item">
-				<div class="list-group list-group-flush">
-					<div class="list-group-item">
-						댓글					
-					</div>
-					<div class="list-group-item">
+			<div class="list-group list-group-flush">
+				<div class="list-group-item">
 					댓글
-					</div>
 				</div>
+				<div class="list-group-item">
+					댓글
+				</div>
+  			<div class="list-group-item pt-4" style="border-bottom:none;">
+  					<nav aria-label="Page navigation">
+						<ul class="pagination justify-content-center">
+						<c:if test="${pageMaker.prev}">
+							<li class="page-item previous">
+								<a class="page-link" href="${pageMaker.startPage-1}" tabindex="-1" aria-disabled="true">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+							</li>
+						</c:if>
+						<c:forEach var="num" begin="${pageMaker.startPage}" end = "${pageMaker.endPage}">
+								<li class="page-item ${pageMaker.bcri.pageNum == num ? "active":"" }">
+									<a class="page-link" href="${num}">${num}</a>
+								</li>
+						</c:forEach>
+						<c:if test="${pageMaker.next}">
+							<li class="page-item next">
+								<a class="page-link" href="${pageMaker.endPage +1 }">
+									<i class="fa-solid fa-chevron-right"></i>
+								</a>
+							</li>
+						</c:if>
+						</ul>
+						<form id="actionForm" action="/book/list" method="get">
+							<input type="hidden" name="book_idx" value="${book_idx}">
+							<input type="hidden" name="chapter_sort" value="${pageMaker.bcri.chapter_sort}">
+							<input type="hidden" name="pageNum" value="${pageMaker.bcri.pageNum}">
+							<input type="hidden" name="amount" value="${pageMaker.bcri.amount}">
+						</form>
+					</nav>	
+  			</div>
 			</div>  			
   			</div>
   			<div class="list-group list-group-flush d-none d-md-flex col-md-4">
@@ -261,7 +279,6 @@ $(function () {
 	var actionForm = $("#actionForm");
 	$(".page-item a").on("click", function(e){
 		e.preventDefault();
-		console.log('click');
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		actionForm.submit();
 	});	
@@ -269,7 +286,61 @@ $(function () {
 </script>
 <script>
 $(".bookmark").on("click", function(){
-	alert("구독기능은 로그인 후 이용해주세요");
+	let none = $(".bookmark-none");
+	let done = $(".bookmark-active");
+	let user = "";
+	<sec:authorize access="isAuthenticated()">	
+	user = '<sec:authentication property="principal.member.member_idx"/>';
+	</sec:authorize>
+
+	let book_idx = '<c:out value="${book.book_idx}"/>';
+	
+	if(user != ""){
+		let formData = new FormData();
+		
+		if(!none.hasClass("d-none")){
+			none.addClass("d-none");
+			done.removeClass("d-none");
+			
+			formData.set("book_idx", book_idx);
+			
+			$.ajax('/book/subscribe', {
+				method: 'POST',
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            success: function () {
+	            	alert('구독하였습니다.');
+	    			none.addClass("d-none");
+	    			done.removeClass("d-none");
+	            },
+	            error: function () {
+	            	alert('구독에 실패하였습니다.');
+	            },
+			});
+		} else if(none.hasClass("d-none")){
+			
+			formData.set("book_idx", book_idx);
+			
+			$.ajax('/book/subscribe', {
+				method: 'POST',
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            success: function () {
+	            	alert('구독을 취소하였습니다.');
+	    			none.removeClass("d-none");
+	    			done.addClass("d-none");
+	            },
+	            error: function () {
+	            	alert('구독취소가 실패하였습니다.');
+	            },
+			});	
+		} 		
+	} else {
+		alert("로그인 후 구독할 수 있습니다.");
+	}
+
 })
 </script>
 </body>
